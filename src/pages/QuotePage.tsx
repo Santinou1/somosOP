@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Car, TrendingUp, Info, Calendar, DollarSign, Clipboard, CheckCircle2, Bike, Plus } from 'lucide-react';
 import { VehicleData, CustomerData, vehicleOptions } from '../types/quoteTypes';
@@ -31,6 +31,9 @@ const QuotePage = () => {
     driverLicense: '',
     driverExperience: ''
   });
+
+  const brandInputRef = useRef<HTMLInputElement>(null);
+  const modelInputRef = useRef<HTMLInputElement>(null);
 
   const filteredBrands = useMemo(() => {
     const search = brandSearch.toLowerCase();
@@ -80,8 +83,12 @@ const QuotePage = () => {
       model: '',
       isCustom: false
     }));
-    setBrandSearch('');
+    setBrandSearch(brand); // Mostrar marca seleccionada en el input
     setModelSearch('');
+    // Quitar foco del input para cerrar el menú
+    if (brandInputRef.current) {
+      brandInputRef.current.blur();
+    }
   };
 
   const handleModelSelect = (model: string) => {
@@ -90,7 +97,11 @@ const QuotePage = () => {
       model,
       isCustom: false
     }));
-    setModelSearch('');
+    setModelSearch(model); // Mostrar modelo seleccionado en el input
+    // Quitar foco del input para cerrar el menú
+    if (modelInputRef.current) {
+      modelInputRef.current.blur();
+    }
   };
 
   const toggleCustomVehicle = () => {
@@ -274,8 +285,9 @@ const QuotePage = () => {
                             value={brandSearch}
                             onChange={(e) => setBrandSearch(e.target.value)}
                             placeholder="Buscar marca..."
+                            ref={brandInputRef}
                           />
-                          {brandSearch && filteredBrands.length > 0 && (
+                          {brandSearch && filteredBrands.length > 0 && brandSearch !== vehicleData.brand && (
                             <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
                               {filteredBrands.map((brand) => (
                                 <div
@@ -300,8 +312,9 @@ const QuotePage = () => {
                             onChange={(e) => setModelSearch(e.target.value)}
                             placeholder="Buscar modelo..."
                             disabled={!vehicleData.brand}
+                            ref={modelInputRef}
                           />
-                          {modelSearch && filteredModels.length > 0 && (
+                          {modelSearch && filteredModels.length > 0 && modelSearch !== vehicleData.model && (
                             <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
                               {filteredModels.map((model) => (
                                 <div
