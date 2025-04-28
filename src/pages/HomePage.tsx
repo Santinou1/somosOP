@@ -10,7 +10,7 @@ const HomePage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="animate-slide-up">
               <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-                Protección a medida para tu vehículo
+                Protección a medida por tu vehículo
               </h1>
               <p className="text-xl mb-8 text-gray-100">
                 Obtenga una cotización personalizada para su auto, taxi o moto en minutos. Seguridad y tranquilidad al mejor precio.
